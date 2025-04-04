@@ -8,9 +8,7 @@ import com.easyjava.utils.StringUtils;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 public class BuildTable {
@@ -60,6 +58,7 @@ public class BuildTable {
 //                 logger.info("table:{}",JsonUtils.convertObj2Json(tableInfo));
 //                 logger.info("field:{}",JsonUtils.convertObj2Json(fieldInfoList));
                 getKeyIndexInfo(tableInfo);
+                tableInfoList.add(tableInfo);
             }
         }catch (Exception e){
             logger.error("read table failed",e);
@@ -96,6 +95,11 @@ public class BuildTable {
         try{
             ps=conn.prepareStatement(String.format(SQL_SHOW_FULL_FIELDS,tableInfo.getTableName()));
             fieldResult=ps.executeQuery();
+
+            Boolean haveDateTime=false;
+            Boolean haveDate=false;
+            Boolean haveBigDecimal=true;
+
             while(fieldResult.next()){
                 String field=fieldResult.getString("Field");
                 String type=fieldResult.getString("Type");
@@ -119,24 +123,22 @@ public class BuildTable {
                 fieldInfo.setJavaType(processJavaType(type));
 
                 if(ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPES,type)){
-                    tableInfo.setHaveDateTime(true);
-                }else{
-                    tableInfo.setHaveDateTime(false);
+                    haveDateTime=true;
+                }
+                if(ArrayUtils.contains(Constants.SQL_DATE_TYPES,type)){
+                    haveDate=true;
                 }
 
-                if(ArrayUtils.contains(Constants.SQL_DATE_TYPES,type)){
-                    tableInfo.setHaveDate(true);
-                }else{
-                    tableInfo.setHaveDate(false);
-                }
                 if(ArrayUtils.contains(Constants.SQL_DECIMAL_TYPE,type)){
-                    tableInfo.setHaveBigDecimal(true);
-                }else{
-                    tableInfo.setHaveBigDecimal(false);
+                    haveBigDecimal=true;
                 }
             }
+            tableInfo.setHaveDateTime(haveDateTime);
+            tableInfo.setHaveDate(haveDate);
+            tableInfo.setHaveBigDecimal(haveBigDecimal);
 
             tableInfo.setFieldList(fieldInfoList);
+
         }catch (Exception e){
             logger.error("read table failed",e);
         }finally {
@@ -167,7 +169,10 @@ public class BuildTable {
         PreparedStatement ps=null;
         ResultSet fieldResult=null;
         List<FieldInfo> fieldInfoList=new ArrayList();
-
+        Map<String,FieldInfo> tempMap=new HashMap();
+        for(FieldInfo fieldInfo:tableInfo.getFieldList()){
+            tempMap.put(fieldInfo.getFieldName(),fieldInfo);
+        }
         try{
             ps=conn.prepareStatement(String.format(SQL_SHOW_INDEX_FROM,tableInfo.getTableName()));
             fieldResult=ps.executeQuery();
@@ -184,12 +189,9 @@ public class BuildTable {
                     keyFieldList= new ArrayList();
                     tableInfo.getKeyIndexMap().put(keyName,keyFieldList);
                 }
-                for(FieldInfo fieldInfo:tableInfo.getFieldList()){
-                    if(fieldInfo.getFieldName().equals(columnName)){
-                        keyFieldList.add(fieldInfo);
-                    }
-                }
-                tableInfo.setFieldList(keyFieldList);
+
+
+                keyFieldList.add(tempMap.get(columnName));
 
 //                 logger.info("Field:{}, propertyName:{}, Type{}, Extra:{},Comment{}",fieldInfo.getFieldName(),fieldInfo.getPropertyName(), fieldInfo.getJavaType(),fieldInfo.getAutoIncrement(),fieldInfo.getComment());
             }
@@ -236,7 +238,7 @@ public class BuildTable {
             return "Long";
         }else if(ArrayUtils.contains(Constants.SQL_STRING_TYPE,type)){
             return "String";
-        }else if(ArrayUtils.contains(Constants.SQL_DATA_TIME_TYPES,type)){
+        }else if(ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPES,type)){
             return "Date";
         }else if(ArrayUtils.contains(Constants.SQL_DECIMAL_TYPE,type)){
             return "BigDecimal";
