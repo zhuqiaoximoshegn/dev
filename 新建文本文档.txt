@@ -136,3 +136,14 @@ CREATE TABLE `app_feedback` (
   UNIQUE KEY `idx_key` (`feedback_id`,`user_id`),
 ) ENGINE=InnoDB AUTO_INCREMENT=10021 DEFAULT CHARSET=utf8mb4 COMMENT='问题反馈';
 
+CREATE TABLE `app_update` (
+  `id`  int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `version` varchar(10) DEFAULT NULL COMMENT '版本号',
+  `update_desc` varchar(500) DEFAULT NULL COMMENT '更新描述',
+  `update_type`  tinyint(1) DEFAULT NULL COMMENT '更新类型0:全更新 1:局部热更新',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `status`  tinyint(4) DEFAULT NULL COMMENT '0:未发布 1:灰度发布 2:全网发布',
+  `grayscale_device` varchar(1000) DEFAULT NULL COMMENT '灰度设备ID',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COMMENT='app发布';
