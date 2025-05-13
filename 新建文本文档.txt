@@ -147,3 +147,49 @@ CREATE TABLE `app_update` (
 
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COMMENT='app发布';
+
+
+
+
+
+CREATE TABLE `app_user_collect` (
+  `collect_id`  int(11) NOT NULL AUTO_INCREMENT COMMENT '收藏ID',
+  `user_id` varchar(15) NOT NULL COMMENT '用户ID',
+  `object_id` varchar(20) DEFAULT NULL COMMENT '主体ID 问题ID，考题ID，分享文章ID',
+  `collect_type`  tinyint(1) DEFAULT NULL COMMENT '0：分享收藏 1：问题收藏 2：考题收藏',
+  `collect_time` datetime DEFAULT NULL COMMENT '收藏时间',
+
+  PRIMARY KEY (`collect_id`),
+  UNIQUE KEY `idx_key` (`user_id`, `object_id`, `collect_type`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT='用户收藏';
+
+
+CREATE TABLE `app_exam` (
+  `exam_id`  int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `user_id` varchar(15) DEFAULT NULL COMMENT '用户ID',
+  `nick_name` varchar(30) DEFAULT NULL COMMENT '用户昵称',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `start_time` datetime DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '结束时间',
+  `status`  tinyint(1) DEFAULT NULL COMMENT '0：未完成 1：已完成',
+  `remark` varchar(150) DEFAULT NULL COMMENT '备注',
+
+  PRIMARY KEY (`exam_id`),
+  KEY `idx_user_id` (`user_id`) 
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COMMENT='用户在线考试';
+
+
+CREATE TABLE `app_exam_question` (
+  `id`  int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `exam_id`  int(11) NOT NULL COMMENT '考试ID',
+  `user_id` varchar(15) DEFAULT NULL COMMENT '用户ID',
+  `question_id`  int(11) DEFAULT NULL COMMENT '问题ID',
+  `user_answer` varchar(20) DEFAULT NULL COMMENT '用户答案',
+  `answer_result`  tinyint(1) DEFAULT NULL COMMENT '0：未作答 1：正确 2：错误',
+
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_key` (`exam_id`, `user_id`, `question_id`),
+  KEY `idx_exam_id` (`exam_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_answer_result` (`answer_result`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COMMENT='考试问题';
