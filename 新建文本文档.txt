@@ -193,3 +193,24 @@ CREATE TABLE `app_exam_question` (
   KEY `idx_user_id` (`user_id`),
   KEY `idx_answer_result` (`answer_result`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COMMENT='考试问题';
+
+
+こんにちは、
+
+
+お忙しいところ恐縮ですが、転職の件につきまして、ご連絡差し上げました。
+キョク　チメイさんから紹介された。
+
+私はチン　マンと申します。転職を考えておりまして。
+経歴書をメールに添付しました。ご確認いただけますと幸いです。
+
+私の連絡先は：
+080-7388-2436
+
+予定の転職日は：8.31
+
+何卒よろしくお願いいたします。
+
+
+
+チン　マン
