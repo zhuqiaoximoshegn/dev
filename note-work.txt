@@ -1,0 +1,887 @@
+c84373256
+**Ma..10
+ye san: 84305509
+yang san: 00858062
+wu san: 00470302
+每个月2号有打卡记录。
+会议订日本时间。
+
+XKL：c00G09601
+chenman@simap-tech.com
+密码还是huawei的。
+_6Uf43mn
+
+
+meili@isoftstone.jp
+afwu@isoftstone.com
+
+email: chenman26@h-partners.com
+
+
+北京休息时间：12.30-14.00
+相当于日本时间：13.30-15.00
+
+Mac: 64-4E-D7-6E-55-AF
+IP: 10.122.189.91
+-----------------------------------------------
+コンダクタンス
+さわつ
+
+
+残差设置为1%即可停止循环。把运算完pause选上。
+
+可以做开放场的运算。
+-----------------------------------------------
+phoenics
+
+7.16 
+Dymola:
+新建-package
+frame_b.r_0[1]
+text  //parameter real amplitude
+
+power>0 网格渐变大， <0 变小
+
+面取り深さ：倒角深度
+
+隙間
+气浮面总压力（ステージ面ゲージ総圧MPa）
+气浮反力（ゲージ総圧による反力N）
+剛性（N/um）
+
+入口绝对总压（入口ゲージ総圧MPa）
+入口总压
+
+仿真条件：入口处设置流量条件7.71*e-6m3/s，改成入口压力0.3MPa，
+出口设置压力大气压。
+
+槽深可选，出口面可改。构建重量已知。求出口面。
+
+转移条件为：调节出口面，试计算支撑压力是否和构建重量一致。
+
+7.19 英文官方有一些案例。对照着尝试发现、应该经常保存case。
+另外可以查fortran是如何使用的。
+
+Fluid duct within solid:
+Click on 'Geometry'. 
+Click on 'Models'.
+
+Leave the 'solution for velocities and pressure' ON.
+Select the LVEL Turbulence model in 'Turbulence Models'. Click on the button next to 'The current domain material is'. Select 'Gases', then.
+
+
+Click on 'Object', 'New', 'New object', Blockage'.
+Click on 'Shape' and in 'Geometry', select PUBLIC\SHAPES\CYLINDER and then click on 'Open'.
+Click on 'General'.
+Click on 'Attributes', click on 'Other materials', 'Domain material'.
+Click on 'Options', 'Rotation options'
+
+grid: 5,10,10,10,5 ,power=1, z symmetric: yes.
+
+Click on 'Main Menu' and then on 'Numerics'. 200
+click on 'Run', 'Solver'(Earth), and click on 'OK' to confirm running Earth.
+click on 'Run', 'Post processor', then GUI Post processor (VR Viewer) Viewer)'.
+
+a must:
+需要把phoenics放在c盘根目录下。
+需要把d_windable文件名改成(或添加)d_windf。
+该结果残差极大。可能有很大的问题。
+
+
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+先要把片切的尽可能薄。切割计算，然后做大量的仿真练习。
+Catia Computer Id: RKK-43191073E7B056B4
+
+P1: total mass-flux
+U1: momentum.
+KE: Turbulent Kinetic Energy
+EP: Turbulent Energy Dissipation Rate
+
+P1,U1,W1,V1: 压力和速度。
+
+提前修改探针位置。
+
+coding, coding.
+FIXFLU 固定流量
+FIXVAL 固定值。
+ Group 17.Relaxation
+RELAX(P1, LINRLX, 1.0)
+把1改成0.1
+property修改为ideal gas.
+在relaxation settings里改。
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+cut-cell technique : PARSOL
+
+
+想象一个管子，入口0.3MPa，速度为0, 出口大气压，求速度，其实可以等效成这个速度场。
+使用速度可能导致xyz三个方向的压力不一致。高速流量的三个方向压力比较一致。
+
+不能修改q1文件。只能用UI。似乎只能用估算的速度作为入口。
+循环次数增多也会改变结果。
+
+安了堵塞体之后把压力的事情，再试两次。
+次数设为400就够了。
+
+可以放在domain setting- inform里。
+SAVE13BEGIN
+SAVE13END
+
+使用－413m/s的速度，突然无法迭代了，这是为什么。把另一个结构封起来之后，速度太高了。把出入口压力正确的设置之后，结果为0的问题，是为啥？
+
+LOW: Refers to the boundary conditions applied at the inflow regions where fluid enters the domain.
+HIGH: Refers to the boundary conditions applied at the outflow regions where fluid leaves the domain.
+WALL: Refers to the boundary conditions applied to solid walls.
+EAST:+X
+WEST:-X
+NORTH:+Y
+SOUTH:-Y
+FREEE: free
+FREEVL: Free velocity boundary
+LINVLX: Linear velocity boundary condition in the x-direction
+VOLUME: the patch applies to a volumetric region
+PROFIL: Profile boundary condition
+PHASEM: Used in multi-phase flow simulations
+RGRAD: Radial gradient boundary condition
+CELL: This type might indicate a specific cell
+
+PRLH1A, PRLH1B, PRLH1C:
+pressure-correction algorithms
+
+Prandtl： Prandtl number for various variables, which is the ratio of momentum diffusivity (viscosity) to thermal diffusivity
+
+PRT:
+These values represent the turbulent Prandtl number, which is used in turbulence modeling to relate the turbulent viscosity to the turbulent thermal diffusivity
+
+SETPRPS(1, 2):
+This command sets properties for material 1
+
+density (RHO1)
+
+DRH1DP = GRND5:
+This indicates that the derivative of density with respect to pressure is determined by a ground (custom) function.
+
+DVO1DT = 3.330000E-03:
+This parameter likely represents the volume expansion coefficient (dV/dT) or a similar thermal expansion term.
+
+TSURR = 0.0:
+This could represent the surrounding or ambient temperature, set to 0.0 in the specified units (possibly Kelvin).
+
+LINRLX: Commonly used for steady-state simulations to control the convergence rate.
+FALSDT: Useful for both transient and steady-state simulations to manage stiff equations or rapid changes in variables.
+
+LTLS: local turbulence length scale
+WDIS：distance from the wall.
+
+
+
+给入口压力和出入口流量，收敛结果较好。
+可以尝试只给压力不给流量的情况。或者
+7.30晚，修改了relaxation，1000次。2小时十分钟。
+
+只用压力和出口流量、残差上千。
+
+如果只加出入口压力，会导致，得到的结果特别小。同时残差上千。没有参考价值。
+
+细化网格无效。
+
+把ideal gas换成其他，效果也不是很好。
+进一步缩小修改了relaxation，效果不明显。
+
+scheme-upwind
+把入口拖远一点。
+都改成LINRLX，也是无效。
+
+进一步缩小修改了relaxation。效果还是不明显。
+禁用SELREF. 完全不行。
+更换各种模型都不合适。
+
+把z的网格再划多一些。残差更大了。需要把其他方向的网格再细分一下。
+
+不设置初始密度和压力
+
+0.1改成1不行。
+把z的网格16-12也不行。
+把网格从16-20
+
+武田采用kw menter baseline. p1残差高达1000%
+1000次已经降到了50%，即使残差降低到更多，也只会导致出现非常巨大的值。
+
+看看其他的实例的模型选择。
+把relaxation改回去。
+
+迭代次数可以一直设置得很高，2000-3000. 中间保存。
+把流量换成速度比较好。或者使用仅压力。
+
+1 查看文档能否中间添加次数
+2 能不能把十字的边边上不需要的网格减少。以提高效率。把单个方向调大一点，单个方向调整得非常粗。
+
+10点开始算，2000需要6.5h.
+加粗网格以后，3000需要3h，
+考虑进一步减少两边的网格。
+
+LPHI=T or F. When IPRE=T, specifies whether a PHI file is to be used.
+in prefix file.  // would not help
+
+METHOD(SIMPLEC)  //?
+勾选numerics-pil-denpco    //might work
+在q1里编辑了一些东西。如果说收敛效果不好还有什么办法可以解决？
+
+
+想办法把u1,v1,w1的relaxation值增大一点。
+把中间两边的网格再调宽一点。
+initialization里把initial conditions additive打开，restart cut-cell values关掉。
+
+做了以上两步以后，收敛略快一点。
+上記の2つのステップを踏むと、収束が若干速くなる。
+
+提relaxation到0.9变化不大。u1w1v1变化快，初始值不大也行。
+plot里可能有一些可以查看数据的。只能查看线。
+
+把中间的网格再一步细分了一点。看看效果。
+
+TRY Schemes
+
+switching from a standard k-epsilon model to a more sensitive and robust model like SST (Shear Stress Transport) or LES (Large Eddy Simulation) 
+
+适度加p1的iteration可以提高收敛速度。
+
+日语总结：
+私の収束結果は
+シミュレーション結果は、実験結果より、搭載できる質量は3倍になる。
+このようにグリッドを分割する。
+ループは6000回あり、十分なループがあれば。。。境界条件に問題はない。
+
+我可以把网格划少点   グリッドを小さくすることはできる。
+relaxation	大きくに
+
+dymola是真空度流导仿真。
+
+效率*压力*面积作为支撑力。
+也就是说大概能算出来增大压力的支撑力。
+
+声学驱动支撑装置。
+多孔材料。油。
+
+如果使用了完整的节流孔，需要记得：要把孔周边做成实体，避免变成气体，做新模型之后循环100次看效果。
+
+对于大模型，可能需要30000次的，把自动收敛勾选，并且，开始的时候不要把relaxation调的太大，但是10000次以后可以调到0.7-0.9，并且可以1%作为收敛标准。
+之后，可以直接测5000次的监视状态。
+
+流导：单位压差下，流经管道的气体体积流量。
+1torr: 133.3pa
+
+catia:点击坐标轴一下，再点一下黄色十字标记。显示对象列表。
+
+
+把input从high改成low.
+1000是6小时，每次按1000来。
+-----------------------------------------------//完整
+一级接大气，孔在滑块上，最后接在导轨上。
+二级的孔在导轨上。一共三个孔。直径10. 二级接一个抽速1000m3/h的干泵。
+
+
+三级接一个抽速260L/s的分子泵.
+
+
+以上修改为，干泵600m3/h
+分子，1250L/s
+
+
+---------------------------------------------------
+论文：
+
+平面静压真空气浮轴承二维分析理论及其实验研究
+小孔节流式空气静压轴承特性研究
+基于Fluent的小孔节流式空气静压轴承特性研究
+环形多孔质节流器外径对气压轴承静态特性的影响
+https://www.leybold.com/ja-jp/knowledge/vacuum-fundamentals/fundamental-physics-of-vacuum/flow-rate-and-types-of-flow
+
+需气量和实际流量不一样。
+Residuals measure how well the numerical solution satisfies the equations at each iteration, while net sources measure the balance of source terms across the domain.
+
+HP：https://www.jspe.or.jp/members/
+会员ID: S070198a
+パスワード：oh5dWA3K
+
+keyword:
+スクイーズ空気軸受
+空気静圧軸受
+Aerostatic bearings
+air bearing
+squeeze film levitation
+Air Static Thrust Bearing
+
+声学驱动支撑装置。
+多孔材料。油。
+上下振动物理。
+阻尼测试。（略复杂）
+
+
+方向：
+（平面一文）建立了流量模型。气膜刚度随供气压强增加，先增后减。
+（有负载的闭式静压气浮导轨动态仿真研究，双边气膜）节流孔直径增加，承载力增加，但是随后会保持不变。
+
+气膜厚度减小，承载力增加。但是除以气膜厚度，也就是计算刚度，会呈现钟字,先增加后减小的变化。
+
+气膜高度和口径可能会有综合效果。不同尺寸下先增后减，或保持不变。
+（十字一文，十字均压槽，气膜厚度与轴承静态刚度关系，扰动影响）
+
+华科论文（超精密一文）：
+节流孔对动力学特性有一些影响。
+
+气浮轴承的一些固有频率。
+每个节流孔形成的支撑气膜可以简化为弹簧-阻尼系统。
+
+p23: 压力分布
+p91-92: 节流孔直径和长度的动力学影响（频响曲线，气浮支撑结构自带模态频率）。
+
+气旋：气膜比较厚的情况下，观察到有气旋。我没有观察到。
+气锤的测试：
+超精密一书也有涉及。
+
+随着气浮轴承刚度增加，固有频率，非线性增加。
+阻尼：振幅随时间指数衰减的速率。能量损失。
+
+真空：抽10-7pa真空会影响气膜厚度。其他情况不明显。
+基于comsol的文章有关于真空下的承载力公式。但是是圆柱形。
+precision positioning 一文是丝杠的控制理论。
+
+书籍：
+超精密气浮定位工作台技术：动力学与控制导论     陈学东  //电子版已有
+超精密气浮工作台的微振动及其抑制      张鸣
+气体润滑理论与气体轴承设计   王云飞
+
+
+------------------------------//catia
+带管道的模型：
+黄色是进气管，
+绿色是联通在一起后，通大气。左右两个面连通大气。
+浅蓝色是联通在一起通低真空泵。都从下面3个口连泵。直径10mm.
+深蓝色是联通在一起通高真空泵。都从上面5个口连泵。直径10mm.
+
+catia在下方邮件把所有的工具栏选中，然后点击面，在上方把透明度设置为75%。
+
+简易真空腔，DP干泵，TMP是高真空泵。
+
+
+ーーーーーーーーーーーー//dymola
+
+inStream 用于定义通过一个端口流入的流体的属性
+
+Xi_outflow 表示流体的成分比例
+C_outflow 代表流体的浓度
+h_outflow 代表流体的焓
+
+args: 位置参数   元组
+kwargs:关键字参数   字典
+
+
+小林san：
+联立方程：F1-F22，最小二乘，Levenberg-Marquardt. (scipy-optimize)
+
+PartialOrifice_cir  //分子流圆管，短　　　CM_ori
+PartialCVcir     //粘性流圆管，长　　　CV_Lcir
+PartialCcir     //中间流、圆管　　CM_ori  and  CV_Lcir
+PartialOrifice_rec　　//分子流方管，短     CM_ori
+PartialCVrec     //粘性流方管，长，包含插值     CV_Lrec
+PartialCrec　　//中间流，方管，包含插值    CM_ori  and  CV_Lrec
+
+//和小林san的区别：
+Ctype4（没有被采用）:
+  q = n*CV_Scir*dp;   该公式需要修改。修改为C_Scir。
+
+内部配管的length公式折算有问题。
+
+小林さんが作成した文書には、いくつか変更すべき点がある。
+計算式に誤りがある。
+この変換ではセルC2とc3を使っているが、他のセルを使うべきだ。 コンダクタンスには同じ体積を利用すべきだ。 そうすれば、変換された長さは新しい直径の長さに対応する。
+
+私の計算が正しいかどうか、まだ検証していないので.
+計算書を作成した
+
+真空技術活用マニュアル  700日元，流量を計算する公式を含む
+
+-----------------------
+如果需要chamber材料气体泄漏这部分，需要修改
+3um:
+C15长度0.3，C11长度14。
+或scham的值45。
+
+无chamber:
+如果是3um间隙，不需要修改。
+如果是5um间隙，需要修改scham的值45。
+
+对于dymola的推导，根据port_a.q + port_b.q = 0; 
+dp = port_a.p - port_b.p; q是管道流量乘以压力。
+从最后面的泵开始，往回推导。
+cv的单位是m3/s，不是传统意义的流导，也不是传统意义的流量。由平均压力计算得到的值。这个m3/s流导的含义是，单位时间的能量除以差压。w/pa
+流体克服阻力做的功。
+
+无论是先算平均压力再乘以差压，还是反过来，本质算的是平均质量（流量乘以平均密度，压力正比于密度）。
+
+人是人生道路的容器，大型自主节点网络。
+ーーーーーーーーーーーー
+
+
+dymola:
+parameter Real[3,n] r={fill(1,n),zeros(n),zeros(n)};
+//parameter Real[3,n] r: This declares a parameter named r which is a 3-by-n array of real numbers. 
+fill(1, n): Creates a 1-by-n array where all elements are 1. This populates the first row of r.
+
+
+Navier-Stokes equations
+
+where:
+
+ρ = fluid density
+u = velocity vector
+t = time
+p = pressure
+μ = dynamic viscosity
+f = body force vector (e.g., gravity)
+
+Physical Meaning of Each Term
+
+Inertial Terms:
+first term represents the change in momentum of a fluid element due to time-dependent changes in velocity. It’s known as the transient term or unsteady term. In steady-state flows, this term is zero.
+
+ρ(u⋅∇)u: This term is the convective acceleration term and represents the change in momentum due to the movement of the fluid element through the velocity field. It captures the effects of velocity changes along the path of the fluid element.
+
+Pressure Gradient Term:
+−∇p: This term represents the force exerted by pressure differences in the fluid. It drives the flow from regions of high pressure to low pressure.
+
+Viscous Term:
+u: This term represents the diffusion of momentum due to viscous effects. It accounts for the internal friction within the fluid as different layers move relative to each other. In gases, this term becomes less significant in rarefied conditions.
+Body Forces:
+
+f: This term includes any external forces acting on the fluid, such as gravitational forces. It represents additional forces per unit volume applied to the fluid.
+
+观测一个能量体是否会影响它。大家的意识本身是微小能量。摄像头只是虚像。虚像不至于会影响能量。但是被采集可能影响能量。
+
+
+ーーーーーーーーーーーー//report 
+
+我负责气膜承载力的仿真，已经有一个仿真结果了，仿真结果和实验结果比较温和。但是模型需要优化到更贴合实际，现在在优化模型进行仿真，因为模型更大了，所以收敛得非常慢，比较耗费时间。
+
+期间也查看了相关论文和dymola的一些内容。
+我以前做自动控制比较多一些。
+ーーーーーーーーーーーー//report 
+
+私は空気膜の耐荷重のシミュレーションを担当しており、すでにシミュレーション結果は出ています。結果と実験結果は一致していますが、誤差があります。より現実に合うようにモデルを最適化する必要があります、今はそのモデルをもとに、シミュレーションしています。モデルが大きいので、収束に時間がかかります。
+
+この間、関連論文やdymolaのコンテンツも読みました。
+以前は自動制御をしていました、コードを読むのも好きでした。
+
+他のシミュレーションは後で行う可能性があります。
+
+モデルのシミュレーション結果をできるだけ実験の結果に近づけることが望ましい。 そうすれば、将来パラメーターを修正する必要がある場合、まずシミュレーションを行う， 結果に基づいて修正する。
+
+モデルを構築し、メッシュを分割し、入口と出口の条件、物理的特性を設定し、メッシュを調整し、収束させる。
+
+ソフトウェアが大まかな圧力を計算し、それが初期値としてdymolaに提供される。
+
+いつも早野さんのお菓子を食べる。
+ーーーーーーーーーーーーーー//report
+
+I am responsible for the simulation of the air film bearing、to try to get a carrying capacity value.
+I have a simulation result which is consistent with the experimental result. 
+However, the model needs to be optimised to fit the real situation better, 
+and now I am simulating based on the new model, the model is quite big, so the convergence is very slow, the computaion is time consuming.
+
+During this period, I have also read some related papers and dymola's contents.
+I used to do automation related work and like reading code.
+
+
+  connect(port_a, port_a)
+    annotation (Line(points={{-100,76},{-100,76}}, color={28,108,200}));
+  connect(port_c, port_c)
+    annotation (Line(points={{-100,26},{-100,26}}, color={28,108,200}));
+  connect(port_f, port_f)
+    annotation (Line(points={{-100,-50},{-100,-50}}, color={28,108,200}));
+  connect(port_cham, port_cham)
+    annotation (Line(points={{-100,-74},{-100,-74}}, color={28,108,200}));
+  connect(port_e, port_e)
+    annotation (Line(points={{-100,-26},{-100,-26}}, color={28,108,200}));
+
+
+因为一点变化（泵转速，或者管道小数位第6位以后的数据）都会影响有没有解.这个可以理解，因为最小用了3nm。所以最后因为一点管道的实际情况差别，可能造成较大的差别。
+
+我得到的解是调整泵参数得到的。不确定这个系统的稳健程度。目前的泄露部分也只是估算，如果修改泄露部分，也会造成很大的影响。
+1 单滑块版本：在之前算的那一版上做了一些调整，调整了泵转速，但是相对差别和上次的ppt里不是很大。
+
+2 三滑块版本：试出来一个结果。但是这样也很难判断整个系统。个别的流态与设定还是有差别。
+
+对dymola，pressure定义和公式即使有一个对不上也会导致check error.
+
+
+//宏，
+单个字符串
+Sub CopyRowsWithSpecificCharacters()
+    Dim ws1 As Worksheet, ws2 As Worksheet
+    Dim cell As Range
+    Dim searchCharacter As String
+    Dim lastRow As Long, nextRow As Long
+
+    ' Set the source and destination worksheets
+    Set ws1 = ThisWorkbook.Sheets("Sheet1")
+    Set ws2 = ThisWorkbook.Sheets("Sheet2")
+    
+    ' Set the character or string to search for
+    searchCharacter = "port_b.p"                                    ' Change this to the character you're looking for
+
+    ' Clear Sheet2 before copying
+    ws2.Cells.Clear
+
+    ' Start copying to the first row in Sheet2
+    nextRow = 1
+
+    ' Loop through each cell in the used range on Sheet1
+    For Each cell In ws1.Range("A:A")
+        ' Check if the cell contains the specific character
+        If InStr(cell.Value, searchCharacter) > 0 Then
+            ' Copy from 1 to 2
+            ws1.Rows(cell.Row).Copy Destination:=ws2.Rows(nextRow)
+            nextRow = nextRow + 1  ' Move to the next row in Sheet2
+        End If
+    Next cell
+End Sub
+
+(っ˘‿(˘⌣˘ )
+//多个字符串
+Sub CopyRowsBasedOnSearchWords()
+    Dim ws1 As Worksheet, ws2 As Worksheet, ws3 As Worksheet, ws0 As Worksheet
+    Dim cell As Range
+    Dim searchWord As String
+    Dim nextRow As Long
+    Dim searchRange As Range
+    Dim wordCell As Range
+    
+    ' Set your worksheets
+    Set ws1 = ThisWorkbook.Sheets("Sheet1")  ' Source sheet
+    Set ws2 = ThisWorkbook.Sheets("Sheet2")  ' Destination sheet
+    Set ws3 = ThisWorkbook.Sheets("Sheet3")  ' You may adjust this as needed
+    Set ws0 = ThisWorkbook.Sheets("Sheet0")  ' Sheet with search words
+    
+    ' Clear Sheet2 before copying
+    ws3.Cells.Clear
+    
+    ' Start copying to the first row in Sheet2
+    nextRow = 1
+    
+    ' Get the search words from Sheet0, assuming they're in column A
+    Set searchRange = ws0.Range("A1:A" & ws0.Cells(ws0.Rows.Count, "A").End(xlUp).Row)
+    
+    ' Loop through each word in Sheet0
+    For Each wordCell In searchRange
+        searchWord = wordCell.Value
+        
+        ' Loop through each cell in the used range on Sheet1
+        For Each cell In ws2.Range("A:A")
+            ' Check if the cell contains the search word
+            If InStr(cell.Value, searchWord) > 0 Then
+                ' copy from 2 to 3
+                ws2.Rows(cell.Row).Copy Destination:=ws3.Rows(nextRow)
+                nextRow = nextRow + 1  ' Move to the next row in Sheet2
+            End If
+        Next cell
+    Next wordCell
+End Sub
+
+
+
+C1_T2_2：从泵到中间滑块卡套的距离。
+C2_T2_2 ：卡套长度
+C3_T2_2 ：从卡套到气体入口。
+C4-C5-C5D-C6: 连大气管路：
+C4_T2_2 ：入口到大气槽之间的流导。
+C5_T2_2 ：大气的slider槽。
+C5D_T2_2_A：T2_2大气槽到T2_2的guide的管子，7段并联。
+C5D_T2_2_B1/B2： T2_2 guide的一半（大气）。
+C5D_T1_1_B: T1_1的大气槽到T2_2的guide的管子。
+C5D_T3_1_B: T3_1的大气槽到T2_2的guide的管子。
+
+C5_T1_1: T1_1的大气slider槽。
+C5_T3_1: T3_1的大气slider槽。
+
+
+C5D_T1_1_A: T1_1大气槽到T1_1的guide的管子。(到垂直接头)。
+C5D_T3_1_A: T3_1大气槽到T3_1的guide的管子。(到垂直接头)。
+C6：垂直接头处到泵的管子。
+
+C7-C8-C9-C10：连低真空泵管路：
+C7_T2_2： T2_2大气槽-低真空槽。
+C8_T2_2：低真空槽。
+C9_T2_2_A: T2_2低真空槽-guide的管子。
+C9_T2_2_B1/B2： T2_2 guide的一半（低真空）。
+
+C9_T1_1_B: T1_1低真空槽-T2_2 guide的接管。
+C9_T3_1_B: T3_1低真空槽-T2_2 guide的接管。
+
+C8_T1_1: T1_1的低真空槽。
+C8_T3_1: T3_1的低真空槽。
+
+C9_T1_1_A: T1_1低真空槽-T1_1 guide的管子(到垂直接头)。
+C9_T3_1_A: T3_1低真空槽-T3_1 guide的管子(到垂直接头) 。
+
+C10：垂直接头处到泵的管子。
+
+
+
+C12-C13-C14-C15-C16：连高真空泵的管路：
+C12_T2_2 ： T2_2低真空槽-高真空槽流导。
+C13_T2_2 ： T2_2高真空槽。
+C14_T2_2_A ： T2_2高真空槽-T2_2guide的管子。
+C14_T2_2_B1/B2： T2_2 guide一半(高真空)。
+C14_T1_1_B: T1_1高真空槽到T2_2guide接管。
+C14_T3_1_B: T3_1高真空槽到T2_2guide接管。
+
+C13_T1_1: T1_1高真空槽。
+C13_T3_1: T3_1高真空槽。
+C14_T1_1_A: T1_1高真空槽-guide的管子。(到垂直接头)。
+C14_T3_1_A: T3_1高真空槽-guide的管子。(到垂直接头)。
+
+C15_1：垂直接头到泵。（T1_1边）
+C15_2：垂直接头到泵。（T3_1边）
+
+C17_T2_2：高真空槽以外的泄露。
+Chamber: 密封腔内材料的气体泄露。
+C18：chamber-chamber泵的管子。
+
+
+
+//another3:
+C1_T2_1：从泵到中间滑块卡套的距离。
+C2_T2_1 ：卡套长度
+C3_T2_1 ：从卡套到气体入口。
+C4-C5-C5D-C6: 连大气管路：
+C4_T2_1 ：入口到大气槽之间的流导。
+C5_T2_1 ：大气的slider槽。
+C5D_T2_1_A：T2_1大气槽到T2_1的guide的管子，7段并联。C5D_T2_1_B1/B2： T2_1 guide的一半（大气）。
+C5D_T1_2_B: T1_2的大气槽到T2_1的guide的管子。
+C5D_T3_2_B: T3_2的大气槽到T2_1的guide的管子。
+
+C5_T1_2: T1_2的大气slider槽。
+C5_T3_2: T3_2的大气slider槽。
+
+
+C5D_T1_2_A: T1_2大气槽到T1_2的guide的管子。(到垂直接头)。
+C5D_T3_2_A: T3_2大气槽到T3_2的guide的管子。(到垂直接头)。
+C6：垂直接头处到泵的管子。
+
+C7-C8-C9-C10：连低真空泵管路：
+C7_T2_1： T2_1大气槽-低真空槽。
+C8_T2_1：低真空槽。
+C9_T2_1_A: T2_1低真空槽-guide的管子。
+C9_T2_1_B1/B2： T2_1 guide的一半（低真空）。
+
+C9_T1_2_B: T1_2低真空槽-T2_1 guide的接管。
+C9_T3_2_B: T3_2低真空槽-T2_1 guide的接管。
+
+C8_T1_2: T1_2的低真空槽。
+C8_T3_2: T3_2的低真空槽。
+
+C9_T1_2_A: T1_2低真空槽-T1_2 guide的管子(到垂直接头)。
+C9_T3_2_A: T3_2低真空槽-T3_2 guide的管子(到垂直接头) 。
+
+C10：垂直接头处到泵的管子。
+
+
+
+C12-C13-C14-C15-C16：连高真空泵的管路：
+C12_T2_1 ： T2_1低真空槽-高真空槽流导。
+C13_T2_1 ： T2_1高真空槽。
+C14_T2_1_A ： T2_1高真空槽-T2_1guide的管子。
+C14_T2_1_B1/B2： T2_1 guide一半(高真空)。
+C14_T1_2_B: T1_2高真空槽到T2_1guide接管。
+C14_T3_2_B: T3_2高真空槽到T2_1guide接管。
+
+C13_T1_2: T1_2高真空槽。
+C13_T3_2: T3_2高真空槽。
+C14_T1_2_A: T1_2高真空槽-guide的管子。(到垂直接头)。
+C14_T3_2_A: T3_2高真空槽-guide的管子。(到垂直接头)。
+
+C15_1：垂直接头到泵。（T1_2边）
+C15_2：垂直接头到泵。（T3_2边）
+
+C17_T2_1：高真空槽以外的泄露。
+Chamber: 密封腔内材料的气体泄露。
+C18：chamber-chamber泵的管子。
+
+单滑块：
+C6: 
+C10: 0.88509252----》0.98564
+C15_1: 0.496601266
+C15_2: 0.502339766
+C18: 
+
+三滑块：
+C6: 0.470224867
+C10: 0.88509252
+C15_1: 0.496601266
+C15_2: 0.502339766
+C18: 0.35819
+
+
+压力量级可参考。
+dymola的微小变化可能导致复杂方程很大的变化导致求解困难。并不一定代表现实的稳态难以达到。
+实验压力可与仿真进行对比。需要多个实验压力验证。
+如果泵无法调节，调节泵接口处的管长也会有用。
+
+DASSL通过将微分方程的导数用差分近似来替换，然后使用牛顿方法求解得到的方程组
+。
+对于一个DAE系统，DASSL会将导数用差分形式替换，从而得到一个非线性方程组。
+
+牛顿方法：
+在每一步中，DASSL使用牛顿方法来求解非线性方程组。牛顿方法是一种迭代方法，通过线性化非线性方程来逐步逼近解。
+具体来说，牛顿方法会计算雅可比矩阵（Jacobian matrix），并使用LU分解来求解线性方程组，从而更新解的近似值。
+
+Sub CopyRowsWithSpecificCharacters()
+    Dim ws1 As Worksheet, ws2 As Worksheet
+    Dim cell As Range
+    Dim searchCharacter As String
+    Dim lastRow As Long, nextRow As Long
+
+    ' Set the source and destination worksheets
+    Set ws1 = ThisWorkbook.Sheets("Sheet1")
+    Set ws2 = ThisWorkbook.Sheets("Sheet2")
+    
+    ' Set the character or string to search for
+    searchCharacter = "port_b.p"                                    ' Change this to the character you're looking for
+
+    ' Clear Sheet2 before copying
+    ws2.Cells.Clear
+
+    ' Start copying to the first row in Sheet2
+    nextRow = 1
+
+    ' Loop through each cell in the used range on Sheet1
+    For Each cell In ws1.Range("A:A")
+        ' Check if the cell contains the specific character
+        If InStr(cell.Value, searchCharacter) > 0 Then
+            ' Copy from 1 to 2
+            ws1.Rows(cell.Row).Copy Destination:=ws2.Rows(nextRow)
+            nextRow = nextRow + 1  ' Move to the next row in Sheet2
+        End If
+    Next cell
+End Sub
+
+
+Sub CopyRowsBasedOnSearchWords()
+    Dim ws1 As Worksheet, ws2 As Worksheet, ws3 As Worksheet, ws0 As Worksheet
+    Dim cell As Range
+    Dim searchWord As String
+    Dim nextRow As Long
+    Dim searchRange As Range
+    Dim wordCell As Range
+    
+    ' Set your worksheets
+    Set ws1 = ThisWorkbook.Sheets("Sheet1")  ' Source sheet
+    Set ws2 = ThisWorkbook.Sheets("Sheet2")  ' Source sheet for .c
+    Set ws3 = ThisWorkbook.Sheets("Sheet3") ' Destination sheet
+    Set ws0 = ThisWorkbook.Sheets("Sheet0")  ' Sheet with search words
+    
+    ' Clear Sheet2 before copying
+    ws3.Cells.Clear
+    
+    ' Start copying to the first row in Sheet2
+    nextRow = 1
+    
+    ' Get the search words from Sheet0, assuming they're in column A
+    Set searchRange = ws0.Range("A1:A" & ws0.Cells(ws0.Rows.Count, "A").End(xlUp).Row)
+    
+    ' Loop through each word in Sheet0
+    For Each wordCell In searchRange
+        searchWord = wordCell.Value
+        
+        ' Loop through each cell in the used range on Sheet1
+        For Each cell In ws2.Range("A:A")
+            ' Check if the cell contains the search word
+            If InStr(cell.Value, searchWord) > 0 Then
+                ' copy from 2 to 3
+                ws2.Rows(cell.Row).Copy Destination:=ws3.Rows(nextRow)
+                nextRow = nextRow + 1  ' Move to the next row in Sheet2
+            End If
+        Next cell
+    Next wordCell
+End Sub
+
+
+
+
+2-2的三个：
+C6: 0.470224867
+C15_1　0.556601266
+C15_2   0.542339766
+C10：0.99864
+
+抽速1944 – 4896 m³/h
+用于氮气的抽气速度
+1360 l/s1.36
+
+	直径mm	长度mm			
+进气C1	6.35	800			
+					
+出大气C6	25	473			
+	40	70			
+	25	10.68115234		25	483.6811523
+					
+出低真空C10	25	436			
+	40	70			
+	25	10.68115234		25	446.6811523
+					
+出高真空C15	25	548			
+	40	70			
+	25	17.08984375		25	565.0898438
+					
+					
+C18				100	71
+
+T2_2:
+C1:0.95
+C18:0.072
+
+T1_1:
+C1:0.95
+C18:0.073
+
+T2 of 3 原来：
+C6   0.025/  0.470224867
+C10   0.025/  0.88509252
+C15_1   0.05/0.496601266
+C15_2   0.05/0.502339766
+C18   0.2/0.35819
+
+
+问的曲san，特氟龙管子的漏气率（使用氦检仪）是e-7 pa·m3/s 
+释气率（使用专用腔体进行对比）
+
+Q_OUT :=8.84e-5+1.5e-6+3e-7;  // the gas coming from the chamber and material, and the leakage of the plastic tube
+
+はやの
+しおで
+
+T2_2 Ps 3.1e5, 3.025e5    0.27/0.26/1.36
+T2_1 Ps 3.85e5,3.73e5
+
+啥时候用queue, list, map,stack,vector?
+如何合理内存开销？
+询问单片机御剑舵机平衡。有空把无人机的代码重温一下。
+opencat保持平衡的核心是什么？md是什么？
+ros的保持算法和视觉算法需要重新看。
+
+
+
+对于phoenics计算结果，边界条件是101325，事实上假如差距几千pa，会对仿真结果有影响，但是实验里并没有测算是多少。仿真的时候，最后压力是多少，需要查看。
+
+对于dymola：
+目前0.3Mpa下，最好的流态是，C9-C12设置为中间流，如果是0.4Mpa以上，流态中间流和粘性都不太可能获得结果。有个方向就是，把中间流的部分扩大，把分子流的部分缩小。但好像还是不行。。。可能是因为中间流公式多，太复杂。可以只更换c10，从中间到粘性试一下。
+
+
+1.22号STB（简易真空腔涉及到MT、量测的测试，改名为STB）晚上10点开启真空腔本体抽真空，48h后真空度2.9E-5Pa，65h+到达2.5E-5Pa，目前已经2.2~2.3E-5Pa（89h+）
+
+热水，先按解除，再两同时按。里面的灯也可以手动解除。
+
+
+
+
